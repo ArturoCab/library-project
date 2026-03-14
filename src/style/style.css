@@ -1,0 +1,76 @@
+:root{
+    --white:#dddcd5;
+    --green:#17351a;
+    --green-border: rgba(23,53,26,.2);
+    --brown:#5f4d3d;
+    --light:#7a8a59;
+    --red:#741d2c;
+}
+
+body{
+
+    padding: 0;
+    margin: 0;
+}
+
+.web-element{
+    padding: 0rem 1rem;
+}
+.distribution{
+    display:grid;
+    min-height: 100vh;
+    grid-template-rows: 130px 1fr 20px;
+
+}
+header{
+    color:var(--red,red);
+}
+
+header>h1{
+    margin-top: 0.5rem;
+}
+
+.container{
+    background-color: var(--white, white);
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    align-content: flex-start;
+}
+.card{
+    display: flex;
+    flex-direction: column;
+    padding: 8px;
+    background-color: var(--light, olive);
+    border-radius: 14px;
+    box-shadow: 2px 3px 8px 0px var(--green-border);
+    height: 200px;
+    width: 200px;
+    transition: all 0.5s ease;
+}
+
+.card>div:last-child{
+    
+    flex: 1;
+    display: flex;
+}
+
+.card>div:last-child>i{
+    align-self: flex-end;
+}
+
+.nav>i:hover{
+    color: yellowgreen;
+    cursor: pointer;
+}
+
+.card>.nav{
+    align-self: self-end;
+    justify-items: right;
+}
+
+.card:hover{
+    transform:translateY(-5px);
+    color:white;
+    background-color: var(--green,darkgreen)
+}
