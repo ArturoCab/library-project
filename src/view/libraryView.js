@@ -5,6 +5,31 @@ function getInputs(){
     return {title,author};
 }
 
+function bindDeleteBook(handler){
+    const container = document.querySelector(".container");
+    container.addEventListener("click", (event) =>{
+        if(event.target.classList.contains("fa-trash")){
+            const id= event.target.dataset.id;
+            handler(id);
+        }
+    })
+}
+
+function bindToggleBook(handler){
+    
+    const container = document.querySelector(".container");
+    container.addEventListener("click", (event)=>{
+        
+        if(event.target.classList.contains("fa-eye") || event.target.classList.contains("fa-eye-slash")){
+            const id= event.target.dataset.id;
+            handler(id);
+        }
+    });
+
+   
+    
+}
+
 function bindAddBook(handler){
 
     const submitButton=document.querySelector("button");
@@ -12,7 +37,12 @@ function bindAddBook(handler){
     submitButton.addEventListener("click",(event) =>{
         event.preventDefault();
         handler();
+        const title = document.querySelector('input[name="title"]');
+        const author = document.querySelector('input[name="author"]');
+        title.value="";
+        author.value="";
     });
+
 }
 
 function renderBooks(books){
@@ -21,7 +51,7 @@ function renderBooks(books){
 
     container.innerHTML="";
 
-    for(b of myLibrary){
+    for(const b of books){
     
     const card=document.createElement("div");
     const title=document.createElement("div");
@@ -36,7 +66,11 @@ function renderBooks(books){
     title.appendChild(document.createTextNode(b.title));
     author.appendChild(document.createTextNode(b.author));
     trashCan.className="fa-solid fa-trash";
-    eye.className="fa-solid fa-eye-slash";
+    trashCan.dataset.id= b.uuid;
+    
+    eye.className=b.read?"fa-solid fa-eye":"fa-solid fa-eye-slash";
+    
+    eye.dataset.id = b.uuid;
 
     nav.appendChild(eye);
     nav.appendChild(trashCan);
@@ -53,4 +87,4 @@ function renderBooks(books){
 }
 
 
-export {getInputs, bindAddBook, renderBooks};
+export {getInputs, bindAddBook, renderBooks, bindDeleteBook, bindToggleBook};

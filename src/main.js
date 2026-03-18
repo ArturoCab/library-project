@@ -1,2 +1,2 @@
-import { initController } from "./controller/libraryController";
+import { initController } from "./controller/libraryController.js";
 initController();
