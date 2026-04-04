@@ -1,34 +1,44 @@
-import {Book, addBookToLibrary, getBooks, removeBook, readBook, save, load} from "../model/library.js";
+import {Library} from "../model/library.js";
+import { Book } from "../model/book.js";
 import {getInputs, bindAddBook, bindDeleteBook, renderBooks, bindToggleBook } from "../view/libraryView.js";
 
+//#region accessible
+const library=new Library();
+//#endregion accessible
 
 function handleReadBook(id){
-    readBook(id);
-    renderBooks(getBooks());
-    save();
+    const book = library.findBook(id)
+    if(!book) return;
+    book.readBook();
+    renderBooks(library.getBooks());
+    library.save();
 }
 
 function handleAddBook(){
     const {title, author} = getInputs();
+    if(!title) {
+        console.error("need title");
+        return;
+    }
     const book = new Book(title, author);
 
-    addBookToLibrary(book);
-    renderBooks(getBooks());
-    save();
+    library.addBook(book);
+    renderBooks(library.getBooks());
+    library.save();
 }
 
 function handleDeleteBook(id){
-    removeBook(id);
-    renderBooks(getBooks());
-    save();
+    library.removeBook(id);
+    renderBooks(library.getBooks());
+    library.save();
 }
 
 function initController(){
-    load();
+    library.load();
     bindAddBook(handleAddBook);
     bindDeleteBook(handleDeleteBook);
     bindToggleBook(handleReadBook);
-    renderBooks(getBooks());
+    renderBooks(library.getBooks());
 }
 
 export  {initController};
