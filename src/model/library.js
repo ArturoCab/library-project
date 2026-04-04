@@ -1,53 +1,62 @@
-const myLibrary = [];
-
-function Book(title, author, read=false) {
-  if(!new.target){
-    throw Error("You must use the 'new' operator");
+class Book{
+  
+  constructor(title, author, read=false){
+    this.uuid=crypto.randomUUID();
+    this.title=title;
+    this.author=author;
+    this.read=read;
   }
 
-  if(!title || !author){
-    throw Error("No title or author");
+
+  readBook(){
+    this.read = !this.read;
   }
-  this.uuid = crypto.randomUUID();
-  this.title=title;
-  this.author=author;
-  this.read=read;
+  getUuid(){
+    return this.uuid;
+  }
 }
 
-function addBookToLibrary(book) {
-  myLibrary.push(book);
-}
+class Library{
+  #myLibrary
 
-function getBooks(){
-  return myLibrary.slice();
-}
+  constructor(){
+    this.#myLibrary=[];
+  }
 
-function readBook(id){
-    const index = myLibrary.findIndex(b=> b.uuid===id);
-    if(index!== -1){
-        
-        
-        myLibrary.at(index).read = !myLibrary.at(index).read;
-    }
+  addBook(book){
+    this.#myLibrary.push(book);
+  }
 
-}
+  getBooks(){
+    return this.#myLibrary.slice();
+  }
 
-function removeBook(id){
-    const index = myLibrary.findIndex(b=> b.uuid===id);
+  findBook(id){
+    return this.#myLibrary.find(b=>b.getUuid()===id)||null;
+  }
+
+  removeBook(id){
+    const index = this.#myLibrary.findIndex(b=> b.uuid===id);
 
     if(index !== -1 ){
-        myLibrary.splice(index,1);
+        this.#myLibrary.splice(index,1);
     }
-}
+  }
 
-function save(){
-    localStorage.setItem("library", JSON.stringify(myLibrary));
-}
-
-function load(){
+  save(){
+    localStorage.setItem("library", JSON.stringify(this.#myLibrary));
+  }
+  
+  load(){
     const data = JSON.parse(localStorage.getItem("library"))||[];
-    myLibrary.length=0;
-    myLibrary.push(...data);
+    this.#myLibrary=data.map(b=>{
+      const book = new Book(b.title, b.author, b.read);
+      book.uuid=b.uuid;
+      return book;
+
+    });
+    
+  }
 }
 
-export {Book, addBookToLibrary, getBooks, removeBook, readBook, save, load}
+export {Library}
